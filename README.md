@@ -1,16 +1,11 @@
 # hammerspoon-config
-I reccommend using [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements) to remap 
-the Caps-Lock key to Hyper(Ctrl-Alt-Cmd) to make shortcuts far easier
-
-## My Hammerspoon Configuration
 ### applaunch.lua
 * Allows launching of apps with Hyper-Shift + Letter
-### config.lua
-* Automatic Reloading of Config on File Change
+	* config stored in apps.json
 
 ### functions.lua
 * Forces Holding of Cmd-Q to quit all apps
-* Ping-test network (Google & Backup NUC) with Hyper-P
+* Ping (Google & Local NAS) with Hyper-P, Hyper-Shift + P
 * Audio Output Status with Hyper-Q
 * Airpods Battery Status with Hyper-Shift + Q
 

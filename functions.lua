@@ -2,32 +2,32 @@
 local hyper = {"cmd", "alt", "ctrl"}
 local shiftHyper = {"cmd", "alt", "ctrl", "shift"}
 
--- -- Hold Cmd-Q to quit all applications
--- cmdQDelay = 0.5
--- cmdQTimer = nil
--- cmdQAlert = nil
+-- Hold Cmd-Q to quit all applications
+cmdQDelay = 0.5
+cmdQTimer = nil
+cmdQAlert = nil
 
 
--- function cmdQCleanup()
---   hs.alert.closeSpecific(cmdQAlert)
---   cmdQTimer = nil
---   cmdQAlert = nil
--- end
+function cmdQCleanup()
+  hs.alert.closeSpecific(cmdQAlert)
+  cmdQTimer = nil
+  cmdQAlert = nil
+end
 
--- function stopCmdQ()
---   if cmdQTimer then
---     cmdQTimer:stop()
---     cmdQCleanup()
---   end
--- end
+function stopCmdQ()
+  if cmdQTimer then
+    cmdQTimer:stop()
+    cmdQCleanup()
+  end
+end
 
--- function startCmdQ()
---   local app = hs.application.frontmostApplication()
---   cmdQTimer = hs.timer.doAfter(cmdQDelay, function() app:kill(); cmdQCleanup() end)
---   cmdQAlert = hs.alert("Hold to Quit " .. app:name(), true)
--- end
+function startCmdQ()
+  local app = hs.application.frontmostApplication()
+  cmdQTimer = hs.timer.doAfter(cmdQDelay, function() app:kill(); cmdQCleanup() end)
+  cmdQAlert = hs.alert("Hold to Quit " .. app:name(), true)
+end
 
--- cmdQ = hs.hotkey.bind({"cmd"}, "q", startCmdQ, stopCmdQ)
+cmdQ = hs.hotkey.bind({"cmd"}, "q", startCmdQ, stopCmdQ)
 
 -- Checking if I'm Online
 function pingResult(object, message, seqnum, error)
@@ -52,10 +52,10 @@ hs.hotkey.bind(hyper, "q", function()
   audioOutput = hs.audiodevice.current(false)
 
   hs.alert.show("O: " .. audioInput["name"] .. " @ " .. audioInput["volume"], 0.75)
---   end)
+end)
 
 -- -- Airpods Battery
--- hs.hotkey.bind(shiftHyper, "q", function()
+hs.hotkey.bind(shiftHyper, "q", function()
   allInfo = hs.battery.privateBluetoothBatteryInfo()
 
   local airPodsConnected = false
@@ -80,17 +80,15 @@ hs.hotkey.bind(hyper, "q", function()
 end)
 
 -- Caps Lock functionality 
+caps = hs.menubar.new()
+
 hs.hotkey.bind(shiftHyper, "space", function()
   hs.hid.capslock.toggle()
 
   if hs.hid.capslock.get() then
-    state = "off"
+    caps:setTitle("0")
   else
-    state = "ON"
+    caps:setTitle("A")
   end
   hs.sound.getByFile("/Users/jmo/.hammerspoon/" .. state .. ".mp3"):play()
 end)
-
--- Ability to open todo list w/ keyboard shortcut / menu bar item
--- openTodoMenu = hs.menubar.new()
--- openTodoMenu:setIcon(hs.image.imageFromPath("/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/SidebariCloud.icns"):setSize({w=20,h=20}), true)
