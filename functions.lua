@@ -22,6 +22,8 @@ function stopCmdQ()
 end
 
 function startCmdQ()
+  require("hs.alert")
+
   local app = hs.application.frontmostApplication()
   cmdQTimer = hs.timer.doAfter(cmdQDelay, function() app:kill(); cmdQCleanup() end)
   cmdQAlert = hs.alert("Hold to Quit " .. app:name(), true)
@@ -31,6 +33,8 @@ cmdQ = hs.hotkey.bind({"cmd"}, "q", startCmdQ, stopCmdQ)
 
 -- Checking if I'm Online
 function pingResult(object, message, seqnum, error)
+  require("hs.notify")
+
   if message == "didFinish" then
     avg = tonumber(string.match(object:summary(), '/(%d+.%d+)/'))
     info ="Pinging " .. object:server()
@@ -44,18 +48,20 @@ function pingResult(object, message, seqnum, error)
 end
 
 hs.hotkey.bind(hyper, "p", function()hs.network.ping.ping("google.com", 5, 0.01, 1.0, "any", pingResult)end)
-hs.hotkey.bind(shiftHyper, "p", function()hs.network.ping.ping("big.local", 5, 0.01, 1.0, "any", pingResult)end)
+hs.hotkey.bind(shiftHyper, "p", function()hs.network.ping.ping("thonk-coffee.home.arpa", 5, 0.01, 1.0, "any", pingResult)end)
 
 -- Show Volume & Audio IO
 hs.hotkey.bind(hyper, "q", function()
+  require("hs.alert")
   audioInput = hs.audiodevice.current(false)
   audioOutput = hs.audiodevice.current(false)
 
   hs.alert.show("O: " .. audioInput["name"] .. " @ " .. audioInput["volume"], 0.75)
 end)
 
--- -- Airpods Battery
+-- Airpods Battery
 hs.hotkey.bind(shiftHyper, "q", function()
+  require("hs.alert")
   allInfo = hs.battery.privateBluetoothBatteryInfo()
 
   local airPodsConnected = false
@@ -77,18 +83,4 @@ hs.hotkey.bind(shiftHyper, "q", function()
   if (not airPodsConnected) then
     hs.alert.show("AirPods not connected")
   end
-end)
-
--- Caps Lock functionality 
-caps = hs.menubar.new()
-
-hs.hotkey.bind(shiftHyper, "space", function()
-  hs.hid.capslock.toggle()
-
-  if hs.hid.capslock.get() then
-    caps:setTitle("0")
-  else
-    caps:setTitle("A")
-  end
-  hs.sound.getByFile("/Users/jmo/.hammerspoon/" .. state .. ".mp3"):play()
 end)

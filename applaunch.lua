@@ -23,4 +23,4 @@ function loadAppLaunchers(pathToFile)
 end
 
 
-loadAppLaunchers("~/.hammerspoon/apps.json")
+loadAppLaunchers("~/.hammerspoon/conf/apps.json")

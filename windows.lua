@@ -134,7 +134,6 @@ end
 hs.hotkey.bind(hyper, "1", moveWindowToDisplay(1))
 hs.hotkey.bind(hyper, "2", moveWindowToDisplay(2))
 hs.hotkey.bind(hyper, "3", moveWindowToDisplay(3))
-hs.hotkey.bind(hyper, "4", moveWindowToDisplay(4))
 
 -- Cycles active window anticlockwise
 hs.hotkey.bind(hyper, 'n', function()
@@ -194,5 +193,4 @@ end
 -- if layoutMCR then
 --    layoutMCR:setClickCallback(clickedMCR)
 -- end
-
 hs.hotkey.bind(shiftHyper, "m", clickedMCR)

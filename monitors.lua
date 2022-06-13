@@ -3,7 +3,7 @@ local hyper = {"cmd", "alt", "ctrl"}
 local shiftHyper = {"cmd", "alt", "ctrl", "shift"}
 
 -- Changing Screen Resolution 
-maximumHeight = hs.json.read("~/.hammerspoon/configs/displayResolutions.json")
+maximumHeight = hs.json.read("~/.hammerspoon/conf/displayResolutions.json")
 
 hs.hotkey.bind(hyper, "-", function()
   curr = hs.screen.mainScreen()
@@ -11,6 +11,8 @@ hs.hotkey.bind(hyper, "-", function()
 
   lastMode = nil
   possibleModes = curr:availableModes()
+
+  print(dump(possibleModes))
   
   -- bad resolutions
   for key,val in pairs(possibleModes) do
@@ -55,7 +57,8 @@ hs.hotkey.bind(hyper, "=", function()
 end)
 
 function badScaleOrAspect(old, new) 
-  return new["scale"] ~= old["scale"] or old["w"] / old["h"] ~= new["w"] / new["h"]
+  return new["scale"] ~= old["scale"] or 
+      old["w"] / old["h"] ~= new["w"] / new["h"]
 end
 
 function clickChangeResolution(junk, data)
@@ -64,8 +67,8 @@ function clickChangeResolution(junk, data)
 end
 
 function changeResolution(new) 
-  print("Width: ", new["w"], "Height: ", new["h"], "Scale: ", new["scale"])
-  curr:setMode(new["w"], new["h"], new["scale"])
+  print(dump(new))
+  curr:setMode(new["w"], new["h"], new["scale"], new["freq"], new["depth"])
 
   refreshResolutions() -- to refresh the menu bar
 end
@@ -84,6 +87,7 @@ end
 
 resolutionMenuBar = hs.menubar.new()
 -- resolutionMenuBar:setIcon(hs.image.imageFromPath(pathToResIcon):setSize({w=20,h=20}), true)
+
 function refreshResolutions()
   resolutionMenuBar:setTitle(resolutionToString(hs.screen.mainScreen():currentMode()))
   
@@ -175,3 +179,17 @@ end
 hs.screen.watcher.new(refreshResolutions):start()
 
 hs.hotkey.bind(hyper, "m", refreshResolutions)
+
+-- Dumps a table to a human readable string
+function dump(o)
+  if type(o) == 'table' then
+     local s = '{ '
+     for k,v in pairs(o) do
+        if type(k) ~= 'number' then k = '"'..k..'"' end
+        s = s .. '['..k..'] = ' .. dump(v) .. ',\n'
+     end
+     return s .. '} '
+  else
+     return tostring(o)
+  end
+end

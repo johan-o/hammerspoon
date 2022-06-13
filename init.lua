@@ -2,11 +2,10 @@ require("windows")
 require("mediaShortcuts")
 require("functions")
 require("applaunch")
--- require("resolutionSwitching")
+require("monitors")
 
 hs.loadSpoon("FnMate")
 
--- refreshResolutions()-- Automatic Reloading on Changes
 function reloadConfig(files)
     doReload = false
     for _,file in pairs(files) do
